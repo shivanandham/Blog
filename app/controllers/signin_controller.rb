@@ -1,26 +1,23 @@
 class SigninController < ApplicationController
-  before_action :authorize_access_request!, only:[:destroy]
+  before_action :authorize_access_request!, only: [:destroy]
 
   def create
-    user = User.find_by(email: params[:email])
-
+    user = User.find_by!(email: params[:email])
     if user.authenticate(params[:password])
-      payload = {user_id: user.id}
-      session = JWTSessions::Session.new(payload: payload, refresh_by_action_allowed: true)
+      payload = { user_id: user.id }
+      session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
       tokens = session.login
-
-      
-      response.ser_cookie(JWTSessions.access_cookie,
-      value: tokens[:access],
-      httponly: true,
-      secure: Tails.env.production?)
-      render json: {crsf: rokens[:scrf]}
+      response.set_cookie(JWTSessions.access_cookie,
+                        value: tokens[:access],
+                        httponly: true,
+                        secure: Rails.env.production?)
+      render json: { csrf: tokens[:csrf] }
     else
-        not_authorized
+      not_authorized
     end
   end
 
-  def  destroy
+  def destroy
     session = JWTSessions::Session.new(payload: payload)
     session.flush_by_access_payload
     render json: :ok
@@ -29,7 +26,6 @@ class SigninController < ApplicationController
   private
 
   def not_found
-    render json: {error: "wrong email/password"}, status: :not_found
+    render json: { error: "Cannot find email/password combination" }, status: :not_found
   end
-
 end
