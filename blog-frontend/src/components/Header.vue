@@ -1,6 +1,6 @@
 <template>
-  <header class="bg-grey-lighter py-4">
-    <div class="container m-auto flex flex-wrap items-center justify-end">
+  <!-- <header class="bg-grey-lighter py-4" >
+    <div class="container mx-auto flex flex-wrap items-center justify-end" >
       <div class="flex-1 flex items-center">
         <title> Blogs</title>
         <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">Blogs</a>
@@ -12,7 +12,25 @@
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Sign out</a>
       </div>
     </div>
-  </header>
+  </header> -->
+
+  <div>
+    <b-navbar toggleable="lg" type="dark" variant=dark position="sticky">
+      <b-navbar-brand href="/">Blogs</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
+          <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
+          <b-nav-item href="/" @click.prevent="signOut" class="" v-if="signedIn()">Sign out</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+  </div>
 </template>
 
 <script>

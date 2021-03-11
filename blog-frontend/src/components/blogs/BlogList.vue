@@ -1,31 +1,50 @@
 <template>
-<div>
+  <div class="bg">
     <Header />
-  <div class="max-w-4xl m-auto py-5">
-  <!-- <div style="width:56rem;"> -->
-    <div v-if="error">{{ error }}</div>
-    <!-- <h3>Add a new blog</h3> -->
+    <br>
+    <div class="mx-auto" style="width: 70rem">
+      <!-- <div style="width:56rem;"> -->
+      <div v-if="error">{{ error }}</div>
+      <!-- <h3>Add a new blog</h3> -->
 
-    <!-- <b-link to="/new" variant="primary">Add new Blog</b-link> -->
-    <b-button @click.prevent="addBlog" variant="primary">Add new Blog</b-button>
+      <b-card-group style="width: 70rem;">
+      <b-card bg-variant="primary" text-variant="white" style="width: 56rem;" >
+      <p class="text-xl-left font-weight-bold" style="font-size:30px"> Blogs <b-button pill @click.prevent="addBlog" variant="success" style="float: right;">Add new Blog</b-button></p>
+      <!-- <p class="text-right"><b-button pill @click.prevent="addBlog" variant="success">Add new Blog</b-button></p> -->
+      <hr>
 
-    <hr />
-
-    <ul>
-      <li v-for="blog in blogs" :key="blog.id" :blog="blog">
-        <b-card bg-variant="light" text-variant="white" style="width: 56rem;">
-            <b-link  @click.prevent="showBlog(blog.id)">{{ blog.title }}</b-link>
-            <b-card-text class="text-dark">
+      <ul>
+        <li v-for="blog in blogs" :key="blog.id" :blog="blog">
+          <!-- overlay img-src="../../assets/bg.jpg" img-alt="Card Image" -->
+          <b-card bg-variant="light" text-variant="white" style="width: 100%;">
+            <p><b-link class="text-capitalize font-weight-bold" style="font-size:20px" @click.prevent="showBlog(blog.id)">{{ blog.title }}</b-link>
+            <b-button
+              pill
+              v-on:click.self.prevent="removeBlog(blog.id)"
+              variant="outline-danger"
+              v-if="checkValidation(blog.user_id)"
+              style="float: right;"
+              >Delete</b-button
+            >
+              <b-button
+              pill
+              v-on:click.self.prevent="editBlog(blog.id)"
+              variant="outline-primary"
+              v-if="checkValidation(blog.user_id)"
+              style="float: right;"
+              >Edit</b-button
+            ></p>
+            <b-card-text class="text-dark text-capitalize">
               {{ blog.body }}
             </b-card-text>
 
-          <b-button v-on:click.self.prevent="editBlog(blog.id)" variant="outline-primary" v-if="checkValidation(blog.user_id)">Edit</b-button>
-          <b-button v-on:click.self.prevent="removeBlog(blog.id)" variant="outline-secondary" v-if="checkValidation(blog.user_id)">Delete</b-button>
-        </b-card>
-        <br>
-      </li>
-    </ul>
-  </div>
+          </b-card>
+          <br />
+        </li>
+      </ul>
+      </b-card>
+      </b-card-group>
+    </div>
   </div>
 </template>
 
@@ -65,7 +84,7 @@ export default {
         text
     },
     addBlog () {
-      this.$router.replace('/new')
+      this.$router.push('/new')
       // const value = this.newBlog
       // if (!value) {
       //   return
@@ -82,14 +101,15 @@ export default {
     },
     removeBlog (blog) {
       this.$http.secured
-        .delete(`/api/v2/blogs/${blog.id}`)
+        .delete(`/api/v2/blogs/${blog}`)
         .then(response => {
+          console.log(response)
           this.blogs.splice(this.blogs.indexOf(blog), 1)
         })
         .catch(error => this.setError(error, 'Cannot delete blog'))
     },
     showBlog (blog) {
-      this.$router.replace('/show/' + blog)
+      this.$router.push('/show/' + blog)
     },
     editBlog (blog) {
       this.$router.push('/edit/' + blog)
@@ -132,5 +152,11 @@ a.stretched-link:before {
   required
   position: relative;
   z-index: 1;
-} */
+}
+.bg{
+  background-image: url('../../assets/bg1.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}*/
 </style>
