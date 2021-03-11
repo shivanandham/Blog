@@ -3,12 +3,12 @@
     <div class="container m-auto flex flex-wrap items-center justify-end">
       <div class="flex-1 flex items-center">
         <title> Blogs</title>
-        <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">Record Store</a>
+        <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">Blogs</a>
       </div>
       <div>
         <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
-        <router-link to="/blogs" class="link-grey px-2 no-underline" v-if="signedIn()">blogs</router-link>
+        <router-link to="/blogs" class="link-grey px-2 no-underline" v-if="signedIn()">Blogs</router-link>
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Sign out</a>
       </div>
     </div>
